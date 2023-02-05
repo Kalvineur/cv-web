@@ -1,0 +1,591 @@
+@font-face {
+    font-family: "Unbounded";
+    src: url(../fonts/Unbounded-Bold.ttf);
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Unbounded";
+    src: url(../fonts/Unbounded-SemiBold.ttf);
+    font-weight: 600;
+    font-style: normal;
+}
+
+/****************************************************************/
+/************************ STYLES GLOBAUX ************************/
+/****************************************************************/
+
+:root{
+    --couleur-principale: #4da5e0;
+    --couleur-contraste: #e0814d;
+    --couleur-texte: #fff;
+    --couleur-texte-secondaire: #ccc;
+    --couleur-background: #0e334c;
+    --border-width-bordure-cadre: 4px;
+    --border-bordure-cadre: var(--border-width-bordure-cadre) solid;
+    --border-image-bordure-cadre: url(../img/bordure-cadre.png) 4/1;
+    --border-image-bordure-cadre-bleu: url(../img/bordure-cadre-bleu.png) 4/1;
+    --section-margin-cotes: 15px;
+    --section-padding: 40px;
+    --background-timing: linear 60s infinite;
+    --background-timing-fast: linear 15s infinite;
+    scroll-behavior: smooth;
+}
+
+/*Pour rendre lisibile tous les textes sur les écrans les plus petits*/
+@media screen and (max-width:400px){
+    *{
+        font-size: 1em !important;
+    }
+}
+
+body{
+    background-color: var(--couleur-background);
+
+    /*Définition de la couleur et de la police par défaut du site */
+    color: var(--couleur-texte);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/****************************************************************/
+/*SECTIONS */
+section{
+    border-left: 1px solid;
+    margin: var(--section-padding) var(--section-margin-cotes);
+    padding: var(--section-padding);
+    border-image: url(../img/bordure-section.png) 53 9/53px 9px;
+    position: relative;
+    z-index: 0;
+}
+/*Pour mettre cote-a-cote deux sections*/
+.double-section{
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: var(--section-padding);
+}
+.double-section>section{
+    flex: 1;
+    margin: 0 var(--section-margin-cotes);
+}
+@media screen and (max-width: 950px){
+    section{
+        padding-right: 0px;
+    }
+    .double-section{
+        flex-direction: column;
+    }
+}
+
+/****************************************************************/
+/* CONTAINER / INNER-SECTION*/
+.container{
+    max-width: 800px;
+    margin: auto;
+}
+.double-section .container{
+    max-width: 500px;
+}
+
+/****************************************************************/
+/* STYLE DES TITRES / TEXTES*/
+h1,h2,h3,.subtitle,.title, ul.nav, #print{
+    font-family: "Unbounded";
+    font-weight: 600;
+}
+h1{
+    font-size: 2.5rem;
+}
+h1 .nom{
+    font-size: .85em;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+h2{
+    text-decoration: underline solid var(--couleur-principale) 3px;
+    text-decoration-skip-ink: none;
+    margin-top: 0;
+    text-indent: 3vw;
+}
+h3{
+    margin: 0 0 .7em;
+    font-size: 1.2rem;
+}
+.subtitle{/* Ici, se trouve toujours après un h3*/
+    font-size: 1rem;
+    text-indent: 2em;
+    margin-top: -.8em;
+}
+
+.title, .flyaway, .subtitle, .date{
+    color: var(--couleur-principale);
+}
+.title{
+    font-size: 1.5rem;
+    margin: .2em 0;
+}
+.flyaway{
+    display: block;
+    font-size: 1.5rem;
+    font-style: italic;
+    margin-top: .5em;
+    margin-bottom: .5em;
+}
+
+abbr{
+    text-decoration-color: var(--couleur-principale);
+}
+
+.date{
+    text-indent: .5em;
+    font-style: italic;
+}
+
+.desc{
+    color:var(--couleur-texte-secondaire);
+    list-style: none;
+    padding-left: 2em;
+    margin: 1em 0 0;
+}
+.desc li:not(:last-of-type){
+    padding-bottom: .2em;
+}
+
+article p{
+    margin: .5em 0;
+}
+
+
+/****************************************************************/
+/* STYLE : BORDER / BORDER-BLOCK*/
+.border, .border-block article{
+    border: var(--border-bordure-cadre);
+    border-image: var(--border-image-bordure-cadre);
+    margin: 20px 0;
+    padding: 20px 30px;
+    position: relative;
+}
+
+/*Gestion BORDER-BLOCK == plusieurs "BORDER" liés entre eux*/
+.border-block article{
+    margin: 0px;
+    --spacing-points: 25px;/*Distance du fil de trame avec le bloc*/
+}
+.border-block article:first-of-type{
+    border-bottom: 0;
+}
+.border-block article:not(:first-of-type, :last-of-type){
+    border-image-source: url(../img/bordure-cadre-continu.png);
+}
+.border-block article:not(:first-of-type, :nth-of-type(2)){
+    border-top: 0;
+}
+
+/*Ajout du fil de trame sur la gauche*/
+    /* ::after == point */
+.border-block article::after{
+    content: "";
+    position: absolute;
+    right: calc(100% + var(--spacing-points));
+    top: calc(50% - 3.5px);
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--couleur-texte);
+}
+    /* ::before == trait */
+.border-block article::before{
+    content:"";
+    position: absolute;
+    right: calc(100% + var(--spacing-points) + 3.5px);
+    top: -2px;
+    width: 1px;
+    height: calc(100% + 4px);
+    background-color: var(--couleur-principale);
+}
+    /*Tronquer la partie haute du premier article du bloc*/
+.border-block article:first-of-type::before{
+    top: 50%;
+    height: calc(50% + 2px);
+}
+    /*Tronquer la partie basse du dernier article du bloc*/
+.border-block article:last-of-type::before{
+    bottom: 50%;
+    height: calc(50% + 2px);
+}
+
+/****************************************************************/
+/*GESTION / STYLE lien sous BORDER*/
+.bottom{
+    position: absolute;
+    top: calc(100% + var(--border-width-bordure-cadre));
+    right: calc(var(--border-width-bordure-cadre) * -1);
+    border: 1px solid var(--couleur-principale);
+    border-top: 0;
+    color: var(--couleur-principale);
+    padding: .2em 2em;
+    text-align: center;
+}
+.has-bottom{
+    margin-bottom: 50px;
+}
+
+/****************************************************************/
+/********************** STYLE PAR SECTION ***********************/
+/****************************************************************/
+
+/* "SECTION" PRESENTATION */
+.presentation{
+    margin: var(--section-margin-cotes);
+    padding: min(8rem, 10vw) max(50px, 8vw) min(9rem, calc(10vw + 3rem));
+    border: var(--border-bordure-cadre);
+    border-image: var(--border-image-bordure-cadre);
+}
+
+.presentation-container{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 100px;
+    align-items: center;
+}
+
+    /*Photo*/
+.presentation-container .photo{
+    filter: drop-shadow(.5em .5em 0 var(--couleur-principale));
+    width: min(300px,100%);
+}
+.presentation-container .photo>img{
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    box-sizing: border-box;
+    clip-path: polygon(25% 0%, 0% 25%, 0% 100%, 75% 100%, 100% 75%, 100% 0%);
+}
+    /*Zone de texte du "milieu"*/
+.presentation-box{
+    flex: 1;
+    min-width: min(500px, 100%);
+}
+.presentation-box>*{
+    width: min(500px, 100%);
+}
+
+    /*Faire "s'envoler" le flyaway quand l'écran est large*/
+@media screen and (min-width:1680px) {
+    .presentation-box{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-width:500px;
+        justify-items: center;
+    }
+    .presentation-box>*{
+        margin: auto;
+    }
+    .presentation-box .flyaway{
+        grid-row: span 2;
+        align-self: center;
+        text-align: center;
+    }
+    .flyaway>span{
+        position: relative;
+        padding: 0 .5em;
+    }
+    .flyaway>span:first-child{top: 1em;}
+    .flyaway>span:last-child{bottom: 1em;}
+    
+    .flyaway>span:nth-child(even){
+        display: none;
+    }
+}
+
+    /*Bouton impression*/
+#print{
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    font-size: 1em;
+    border: 0;
+    padding: .5em 2em;
+    color: var(--couleur-principale);
+    background-color: var(--couleur-texte);
+    z-index: 1;
+}
+
+    /* Menu Présentation*/
+ul.nav{
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    top: min(8rem, calc(10vw + 2rem));
+    margin: 0 min(-20px, calc(-8vw + 30px));
+}
+ul.nav li{
+    flex: 1;
+    text-align: center;
+    min-width: 250px;
+    max-width: 400px;
+}
+ul.nav a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--couleur-texte);
+    color: var(--couleur-principale);
+    width: 100%;
+    height: 2.5em;
+    text-decoration: none;
+}
+
+/****************************************************************/
+/* SECTION CERTIFICATION */
+.certifications article{
+    padding: 2em 0;
+}
+.certifications article:not(:last-of-type){
+border-bottom: 1px solid var(--couleur-principale);
+}
+
+/****************************************************************/
+/* SECTION COMPETENCES*/
+/* 1 - Grosse capsule */
+.competences{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Sous-capsule pour creer deux colonnes */
+.competences-block{
+    box-sizing: border-box;
+    min-width: min(380px, 100%);/*Taille minimale de 380px mais ne peut pas depasser de son parent*/
+}
+
+/* Bloc de liste */
+.competences-block article{
+    padding-left:2em ;
+    border-left: 1px solid var(--couleur-principale);
+}
+.competences-block article:not(:last-of-type){
+    margin-bottom: 30px;
+}
+
+/*Style des listes*/
+.competences-block ul, .certifications ul{
+    margin: 0;
+    padding-left: 1em;
+    list-style-type: square;
+}
+.competences-block ul>li::marker, .certifications ul>li::marker{
+    color: var(--couleur-principale);
+}
+.competences-block li, .certifications li{
+    margin-bottom: .5em;
+}
+/*Style des sous-listes*/
+.competences-block ul ul{
+    margin: .5em 0;
+}
+.competences-block ul ul>li::marker{
+    color: var(--couleur-texte-secondaire);
+}
+
+/****************************************************************/
+/* SECTIONS JUMELLES - INTERETS & LANGUES*/
+.puces{
+    list-style: none;
+    padding: 0;
+}
+.puces li{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 30px;
+    font-size: 1.2em;
+    font-style: italic;
+}
+.puces p{
+    margin: 0;
+}
+.puces .sub{
+    font-size: .7em;
+    color: var(--couleur-texte-secondaire);
+}
+.puces img{
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
+}
+
+/****************************************************************/
+/* SECTION RESEAUX */
+.reseaux{
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: center;
+    gap: 30px 50px;
+    flex-wrap: wrap;
+}
+.reseaux-item{
+    min-width: 200px;
+}
+.reseaux-item a{
+    display: flex;
+    flex-direction: column;
+    color: var(--couleur-principale);
+}
+.reseaux-item img{
+    padding: 30px 50px;
+    height: 100px;
+    object-fit: contain;
+    border: var(--border-bordure-cadre);
+    border-image: var(--border-image-bordure-cadre);
+    transition: filter .2s;
+}
+.reseaux-item span{
+    margin-left: 3px;
+    border: 1px solid var(--couleur-principale);
+    border-top-color: transparent;
+    padding: .5em;
+    text-align: center;
+}
+
+/****************************************************************/
+/***************** STYLE HOVER LIENS / BOUTON *******************/
+/****************************************************************/
+
+:is(.bottom, .reseaux-item a, ul.nav a, #print):is(:hover,:focus-visible){
+    color: var(--couleur-texte);
+}
+:is(.bottom, .reseaux-item a, ul.nav a, #print){
+    box-shadow: 0px 0px 0 transparent;
+    transition: box-shadow .2s, background-color .2s, color .2s;
+}
+
+:is(.bottom, ul.nav a, #print):is(:hover,:focus-visible),
+.reseaux-item a:is(:hover,:focus-visible) span
+    {
+    background-color: var(--couleur-principale);
+    box-shadow: 3px 3px 0 var(--couleur-texte);
+}
+.reseaux-item a:is(:hover,:focus-visible) img{
+    filter: brightness(3) grayscale(1);
+}
+
+:is(.bottom, .reseaux-item a, ul.nav a, #print):focus-visible{
+    outline: 5px var(--couleur-contraste) solid;
+    outline-offset: 3px;
+    border-radius: 3px;
+}
+
+/****************************************************************/
+/********************** FONDS - ANIMATION ***********************/
+/****************************************************************/
+
+.presentation{
+    position: relative;
+    z-index: 0;
+}
+.presentation::before{
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: calc(100% + 3px);
+    height: calc(100% + 3px);
+    z-index: -1;
+    background-image: url(../img/fond-kalvineur-1.png), url(../img/fond-kalvineur-2.png);
+    background-size: 450px;
+    animation: background-presentation var(--background-timing);
+    -moz-transform: rotateY(0.02deg); /*Force firefox a ne pas optimiser le rendu des images, les laissant floues et permet de mieux lisser les animations*/
+}
+@keyframes background-presentation{
+    from{background-position: -225px, 450px;}
+    to{background-position: 225px, 0;}
+}
+
+section::before{
+    content: '';
+    display: block;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 100%;
+    height: calc(100% - 5px);
+    z-index: -1;
+    --mask-image: linear-gradient(to right, #0008, #0003 20%, #0000);
+    mask-image: var(--mask-image);
+    -webkit-mask-image: var(--mask-image);
+    border-top: 1px solid var(--couleur-principale);
+    border-bottom: 1px solid var(--couleur-principale);
+    background-image: url(../img/fond-grille-1.png), url(../img/fond-grille-2.png);
+    background-size: 21px;
+    background-position: 0px 0px, 10px 10px;
+    -moz-transform: rotateY(0.02deg); /*Force firefox a ne pas optimiser le rendu des images, les laissant floues et permet de mieux lisser les animations*/
+}
+
+#experiences::before{
+    animation: background-experiences var(--background-timing-fast);
+}
+@keyframes background-experiences {
+    from{background-position: 0 0, 0px 0px;}
+    to{background-position: 21px 21px, 42px 42px;}
+}
+
+#formations::before{
+    animation: background-formations var(--background-timing);
+}
+@keyframes background-formations {
+    0%, 100%{background-position: 0px 0px, 31px 31px;}
+    25%{background-position: 21px 0px, 10px 31px;}
+    50%{background-position: 21px 21px, 10px 10px;}
+    75%{background-position: 0px 21px, 31px 10px;}
+}
+
+#certifications::before{
+    animation: background-certifications var(--background-timing-fast);
+}
+@keyframes background-certifications {
+    0%{background-position: 0px 0px, 0px 0px;}
+    50%{background-position: 21px 21px, 0px 0px;}
+    100%{background-position: 21px 21px, 21px 21px;}
+}
+
+#competences::before{
+    animation: background-competences var(--background-timing-fast);
+}
+@keyframes background-competences {
+    0%{background-position: 0px 0px, 0px 0px;}
+    100%{background-position: 0px 21px, 21px 0px;}
+}
+
+#interets::before{
+    animation: background-interets var(--background-timing-fast);
+}
+@keyframes background-interets {
+    0%{background-position: 0px 0px, 10px 10px;}
+    100%{background-position: 0px 0px, 31px 10px;}
+}
+
+#langues::before{
+    animation: background-langues var(--background-timing-fast);
+}
+@keyframes background-langues {
+    0%{background-position: 0px 0px, 10px 10px;}
+    100%{background-position: 0px 21px, 10px 10px;}
+}
+
+#reseaux::before{
+    animation: background-reseaux var(--background-timing-fast);
+}
+@keyframes background-reseaux {
+    0%{background-position: 0px 0px, 0px 21px;}
+    100%{background-position: 21px 21px, 21px 0px;}
+}
+

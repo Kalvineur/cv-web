@@ -1,0 +1,279 @@
+/*
+* J'aurais du faire un css général, puis un css screen et un css print pour m'éviter de devoir redéfinir des valeurs a zero
+* D'un autre coté, ça me permet d'appliquer ce style uniquement sur le print et de le laisser tel quel sur tout les autres supports
+*
+* Cette feuille de style sert a modifier le style de la page
+*/
+
+/****************************************************************/
+/************************ STYLES GLOBAUX ************************/
+/****************************************************************/
+
+:root{
+    --couleur-texte: #000;
+    --couleur-texte-secondaire: #333;
+    --couleur-principale: #4da5e0;
+    font-size: 12pt;
+}
+@page {/*Défini les marges par défaut de la page*/
+    margin: .2cm .5cm;
+}
+html{margin: 0;}
+body{
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    background-color: transparent;
+    margin: 0;
+    --padding-page: .7cm;
+}
+
+/****************************************************************/
+/* SUPPRESSION DE CERTAINS STYLES / ELEMENTS */
+ul.nav, .bottom, .desc, .presentation-texte, #print{
+    display: none;
+}
+abbr{
+    text-decoration: none;
+}
+.presentation, .border, section, .competences-block article, .border-block article, .reseaux-item img, .reseaux-item span{
+    border: 0;
+    border-image:none;
+}
+.border-block article::before, .border-block article::after, .presentation::before, section::before{
+    content: none;
+}
+
+/****************************************************************/
+/* MISE EN PAGE */
+#corps-de-page{
+    display: grid;
+    grid-template-columns: 7cm 1fr;
+    grid-template-areas: "gauche droite";
+}
+#page-gauche{
+    grid-area: gauche;
+    display: flex;
+    flex-direction: column;
+}
+#page-gauche section{
+    padding-right: 0;
+}
+#page-droite{
+    grid-area: droite;
+    display: flex;
+    flex-direction: column;
+}
+#formations article:nth-child(n+3){
+    display: none;
+}
+#reseaux{
+    order: -1;
+}
+#competences{
+    order: 1;
+}
+
+/****************************************************************/
+
+/*Structure identique à celle la page principale*/
+
+/****************************************************************/
+/*SECTIONS */
+section{
+    margin: 0;
+    padding: 0 var(--padding-page);
+}
+.double-section{
+    display: block;
+}
+.double-section>section{
+    margin: 0;
+}
+
+/****************************************************************/
+/* CONTAINER / INNER-SECTION*/
+    /*Pas de modification*/
+/****************************************************************/
+/* STYLE DES TITRES / TEXTES*/
+h1{
+    font-size: 2.5rem;
+    margin: .2cm 0;
+}
+h2{
+    font-size: 1.2rem;
+    text-indent: 0;
+    margin: .2cm 0 .3cm -.2cm;
+}
+h3{
+    font-size: 1rem;
+    margin-bottom: .1cm;
+}
+.subtitle{
+    margin-top: -.1cm;
+    margin-bottom: .1cm;
+    font-size: 0.9em;}
+
+.title{
+    margin: .2cm 0;
+}
+.flyaway{margin: .2cm 0 calc(var(--padding-page) - .1cm);}
+
+article p{
+    margin: .1cm 0;
+}
+
+/****************************************************************/
+/* STYLE : BORDER / BORDER-BLOCK*/
+.border, .border-block article:nth-child(n), .certifications article:nth-child(n){
+    margin: 0 0 .4cm;
+    padding: 0;
+}
+
+/****************************************************************/
+/*GESTION / STYLE lien sous BORDER*/
+    /* Se fait supprimer */
+
+/****************************************************************/
+/********************** STYLE PAR SECTION ***********************/
+/****************************************************************/
+/* "SECTION" PRESENTATION */
+.presentation{
+    margin: 0;
+    padding: 0;
+    height: 7cm;
+}
+.presentation-container{
+    display: grid;
+    grid-template-columns: 7cm 1fr;
+    gap: 0;
+}
+    /*Photo*/
+.presentation-container .photo{
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--padding-page);
+    margin: 0;
+    filter: drop-shadow(0.15cm 0.15cm 0 var(--couleur-principale));
+}
+.presentation-container .presentation-box{
+    padding:  0 var(--padding-page);
+    box-sizing: border-box;
+    height: 100%;
+    display:flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+/****************************************************************/
+/* SECTION CERTIFICATION */
+    .certifications article:not(:last-of-type){
+        border: 0;
+    }
+
+/****************************************************************/
+/* SECTION COMPETENCES*//**/
+/* 1 - Grosse capsule */
+.competences{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: 0;
+    font-size: .9em;
+    align-items: start;
+}
+
+/* Bloc de liste */
+.competences-block article{
+    padding-left: 0;  
+}
+.competences-block article:not(:last-of-type){
+    margin-bottom: .5cm;
+}
+
+/* Alteration des titres H3 */
+.competences-block h3{
+    font-size: .9em;
+    padding-bottom: .05cm;
+}
+
+/*Style des listes*/
+.competences-block li {
+    margin-bottom: .1cm;
+}
+/*Style des sous-listes*/
+.competences-block ul ul {
+    padding-left: .2cm;
+    list-style: none;
+    font-size: .9em;
+    margin: .2mm 0;
+}
+.competences-block ul ul li{
+    margin-bottom: 0cm;
+}
+
+.condensed{
+    font-stretch: condensed;
+}
+
+/****************************************************************/
+/* SECTIONS JUMELLES - INTERETS & LANGUES*/
+.puces{
+    margin: 0;
+}
+.puces li{
+    margin: 0;
+    gap: .3cm;
+    padding: 0 0 .2cm 0;
+    font-size: 1rem;
+    font-style: normal;
+}
+.puces img{
+    width: .9cm;
+    height: .9cm;
+}
+
+/****************************************************************/
+/* SECTION RESEAUX */
+.reseaux{
+    gap: .2cm;
+    justify-content: flex-start;
+}
+.reseaux-item a{
+    padding: 0;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: .3cm;
+    text-decoration: none;
+    color: var(--couleur-texte);
+}
+.reseaux-item img{
+    padding: 0;
+    width: .9cm;
+    height: .8cm;
+}
+.reseaux-item span{
+    text-align: left;
+    padding: 0;
+}
+
+/****************************************************************/
+/***************** STYLE HOVER LIENS / BOUTON *******************/
+/****************************************************************/
+/* pour des raisons qui me sont inconnues :hover prend effet sur un document avant l'impression, mais pas :focus-visible */
+:is(.bottom, .reseaux-item a, ul.nav a, #print):hover{
+    color: var(--couleur-texte);
+}
+:is(.bottom, ul.nav a, #print):hover,
+.reseaux-item a:hover span{
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.reseaux-item a:hover img{
+    filter: none;
+}
+
+/****************************************************************/
+/********************** FONDS - ANIMATION ***********************/
+/****************************************************************/
+    /* Se fait supprimer */
